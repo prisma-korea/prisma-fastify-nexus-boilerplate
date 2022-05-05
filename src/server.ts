@@ -24,7 +24,7 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
   server.register(openTelemetryPlugin, {
     wrapRoutes: true,
     ignoreRoutes: tracingIgnoreRoutes,
-    formatSpanName: (serviceName, request) =>
+    formatSpanName: (request) =>
       `${request.url} - ${request.method}`,
   });
   server.register(statusPlugin);

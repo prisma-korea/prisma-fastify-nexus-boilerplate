@@ -7,9 +7,9 @@ import {
 import { AsyncHooksContextManager } from '@opentelemetry/context-async-hooks'
 import { CollectorTraceExporter } from '@opentelemetry/exporter-collector'
 import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql'
-import { HttpTraceContextPropagator } from '@opentelemetry/core'
 import { NodeTracerProvider } from '@opentelemetry/node'
 import { Resource } from '@opentelemetry/resources'
+import { W3CTraceContextPropagator } from '@opentelemetry/core'
 
 const provider = new NodeTracerProvider({
   resource: new Resource({
@@ -56,7 +56,7 @@ if (process.env.CONSOLE_EXPORTER === 'true') {
 }
 provider.register({
   contextManager: new AsyncHooksContextManager().enable(),
-  propagator: new HttpTraceContextPropagator(),
+  propagator: new W3CTraceContextPropagator(),
 })
 
 export default provider
