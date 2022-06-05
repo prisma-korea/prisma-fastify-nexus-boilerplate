@@ -3,7 +3,7 @@ import {FastifyPluginAsync} from 'fastify';
 const statusPlugin: FastifyPluginAsync = async (server, options) => {
   // @ts-ignore
   server.get(`/`, () => {
-    return {up: true};
+    return {version: '1.0.0'};
   });
 };
 

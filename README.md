@@ -12,31 +12,42 @@ This repo shows how to build a GraphQL server with TypeScript and the following 
 
 The project is written in TypeScript and attempts to maintain a high degree of type-safety by leveraging Prisma and GraphQL.
 
-## DB Schema
+## Setup environment
+1. cp `./dotenv/test.env` `./dotenv/.env`
+2. Include `DATABASE_URL`
+   ```
+   DATABASE_URL="postgresql://<user>:<password>@<url>:5432/postgres?schema=<scheme>"
+   ```
+   > Note that you should change appropriate values in `user`, `password`, `url`, `scheme` fields. Or you can even use other database. More about [connection urls](https://www.prisma.io/docs/reference/database-connectors/connection-urls)
+3. Running `yarn start` or `yarn dev` will load `env` from `dotenv/.env`.
 
-The database schema is defined using the [Prisma schema](./prisma/schema.prisma) which defines 3 models:
-- User
-- Post
-- Comment
+## Generate Prisma Client and Nexus
+```
+yarn generate
+```
 
+## Migration
 
-## GraphQL schema
+#### Init migration
 
-The GraphQL schema is defined with Nexus using the [code-first approach](https://www.prisma.io/blog/the-problems-of-schema-first-graphql-development-x1mn4cb0tyl3).
+1. Change models in `schema.prisma`.
+   > Note that `prisma/migrations` dir is included in `.gitignore` in this repo but it should not be ignored in production.
+2. Run migration script.
+   > Note that this should be targeting the production database. Locally, you can just run `yarn db-push`.
+   ```
+   yarn migrate
+   ```
+3. Deploy migration to production.
+   > Note you may want to run `yarn migrate:dev` beforhand to test your migration.
+   ```
+   yarn migrate:deploy
+   ```
 
-The relevant files are:
-- [./src/schema.ts](./src/schema.ts): Source of truth for the schema in TypeScript
-- [./schema.graphql](./schema.graphql): Generated GraphQL scehma
-
-## Getting started
-
-### Prerequisites 
-- A PostgreSQL DB
-
-### Steps
-
-1. clone repo
-2. create `.env` file and define `DATABASE_URL` and `SENTRY_DSN`
-3. `pnpm install`
-4. `pnpm migrate:dev` to run shcema migrations with [Prisma Migrate](https://www.prisma.io/migrate)
-5. `pnpm dev` to start dev server and run the API
+#### Create test user
+```sh
+➜  ~ createuser --interactive --pwprompt
+Enter name of role to add: test
+Enter password for new role: 
+Enter it again: 
+Shall the new role be a superuser? (y/n) y
+```
