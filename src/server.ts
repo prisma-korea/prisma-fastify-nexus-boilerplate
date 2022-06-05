@@ -1,5 +1,3 @@
-require('./opentelemetry');
-
 import fastify, {
   FastifyInstance,
   FastifyReply,
@@ -9,28 +7,19 @@ import fastify, {
 
 import AltairFastify from 'altair-fastify-plugin';
 import {Context} from './context';
-import {PubSub} from 'graphql-subscriptions';
 import {getUserId} from './utils/auth';
 import mercurius from 'mercurius';
-import openTelemetryPlugin from '@autotelic/fastify-opentelemetry';
 import prismaPlugin from './plugins/prisma';
 import {schema} from './schema';
 import shutdownPlugin from './plugins/shutdown';
 import statusPlugin from './plugins/status';
-import {tracingIgnoreRoutes} from './constants';
 
 const {JWT_SECRET} = process.env;
 
 export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
-  const pubsub = new PubSub();
   const server = fastify(opts);
 
   server.register(shutdownPlugin);
-  server.register(openTelemetryPlugin, {
-    wrapRoutes: true,
-    ignoreRoutes: tracingIgnoreRoutes,
-    formatSpanName: (request) => `${request.url} - ${request.method}`,
-  });
   server.register(statusPlugin);
   server.register(prismaPlugin);
 
@@ -42,8 +31,8 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
       return {
         request,
         reply,
+        pubsub: server.websocketServer,
         prisma: server.prisma,
-        pubsub,
         appSecret: JWT_SECRET,
         userId: getUserId(reply.request.headers.authorization as string),
       };
@@ -57,7 +46,7 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
       context: async (_, req) => {
         return {
           prisma: server.prisma,
-          pubsub,
+          pubsub: server.websocketServer,
           appSecret: JWT_SECRET,
           userId: getUserId(req.headers.authorization as string),
         };

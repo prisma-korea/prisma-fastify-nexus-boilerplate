@@ -1,10 +1,12 @@
 import {nonNull, stringArg, subscriptionField} from 'nexus';
 
 import {assert} from '../../utils/assert';
-import {withFilter} from 'graphql-subscriptions';
+import mercurius from 'mercurius';
 
 export const USER_SIGNED_IN = 'USER_SIGNED_IN';
 export const USER_UPDATED = 'USER_UPDATED';
+
+const {withFilter} = mercurius;
 
 export const userSignedIn = subscriptionField('userSignedIn', {
   type: 'User',
@@ -15,12 +17,13 @@ export const userSignedIn = subscriptionField('userSignedIn', {
     (_, args, ctx) => {
       const {pubsub} = ctx;
 
-      return pubsub.asyncIterator(USER_SIGNED_IN);
+      return pubsub.subscribe(USER_SIGNED_IN);
     },
     (payload, {userId}) => {
       return payload.id === userId;
     },
   ),
+  // @ts-ignore
   resolve: (payload) => {
     return payload;
   },
@@ -32,13 +35,14 @@ export const userUpdated = subscriptionField('userUpdated', {
     userId: nonNull(stringArg()),
   },
   subscribe: withFilter(
-    (_, __, {pubsub}) => pubsub.asyncIterator([USER_UPDATED]),
+    (_, __, {pubsub}) => pubsub.subscribe([USER_UPDATED]),
     (payload, {userId}) => {
       assert(userId, 'Not Authorized!');
 
       return payload.id === userId;
     },
   ),
+  // @ts-ignore
   resolve: (payload) => {
     return payload;
   },

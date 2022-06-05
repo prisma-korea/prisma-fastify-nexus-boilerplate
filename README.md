@@ -8,7 +8,6 @@ This repo shows how to build a GraphQL server with TypeScript and the following 
 - [**Prisma**](https://www.prisma.io/): Next-generation ORM for type-safe interaction with the database
 - [**PostgreSQL**](https://www.postgresql.org/): powerful, open source object-relational database system with over 30 years of active development.
 <!-- - [**Sentry**](https://sentry.io/): an error tracking and monitoring tool. -->
-- [**OpenTelemetry Tracing**](https://opentelemetry.io/): An observability framework for cloud-native software. Configured to trace HTTP requests, GraphQL resolution and Prisma queries.
 - [**Altair GraphQL**](https://altair.sirmuel.design/): GraphQL Web Client (similar to GraphQL Playground)
 
 The project is written in TypeScript and attempts to maintain a high degree of type-safety by leveraging Prisma and GraphQL.

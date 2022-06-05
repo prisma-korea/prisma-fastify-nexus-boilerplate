@@ -83,7 +83,10 @@ export const signIn = mutationField('signIn', {
       throw new Error('Invalid password');
     }
 
-    pubsub.publish(USER_SIGNED_IN, user);
+    pubsub.publish({
+      topic: USER_SIGNED_IN,
+      payload: user,
+    });
 
     return {
       token: sign({userId: user.id}, APP_SECRET),
@@ -105,7 +108,10 @@ export const updateProfile = mutationField('updateProfile', {
       data: user,
     });
 
-    pubsub.publish(USER_UPDATED, updated);
+    pubsub.publish({
+      topic: USER_UPDATED,
+      payload: updated,
+    });
 
     return updated;
   },

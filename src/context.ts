@@ -1,13 +1,13 @@
 import {FastifyReply, FastifyRequest} from 'fastify';
 
 import {PrismaClient} from '@prisma/client';
-import {PubSub} from 'graphql-subscriptions';
+import {PubSub} from 'mercurius';
 
 export interface Context {
   prisma: PrismaClient;
   request: FastifyRequest;
-  reply: FastifyReply;
   pubsub: PubSub;
+  reply: FastifyReply;
   appSecret: string | undefined;
   userId: string | null;
 }
