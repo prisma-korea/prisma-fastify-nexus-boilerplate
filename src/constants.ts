@@ -15,4 +15,4 @@ export const tracingIgnoreRoutes = [
   '/altair/jetbrains-mono-latin-400-normal.woff2',
   '/altair/0-es2018.worker.js',
   '/altair/13-es2018.js',
-]
+];
