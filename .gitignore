@@ -2,4 +2,6 @@ node_modules/
 dist/
 src/generated/
 *.env*
+!dotenv/test.env
 *.db
+.DS_Store

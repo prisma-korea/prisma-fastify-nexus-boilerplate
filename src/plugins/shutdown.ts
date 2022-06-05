@@ -1,8 +1,8 @@
-import { FastifyPluginAsync } from 'fastify'
+import {FastifyPluginAsync} from 'fastify';
 
 const shutdownPlugin: FastifyPluginAsync = async (server, options) => {
-  process.on('SIGINT', () => server.close())
-  process.on('SIGTERM', () => server.close())
-}
+  process.on('SIGINT', () => server.close());
+  process.on('SIGTERM', () => server.close());
+};
 
-export default shutdownPlugin
+export default shutdownPlugin;

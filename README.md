@@ -5,7 +5,6 @@ This repo shows how to build a GraphQL server with TypeScript and the following 
 - [**Fastify**](https://www.fastify.io/): Fast and low overhead web framework, for Node.js
 - [**Mercurius**](https://mercurius.dev/): GraphQL adapter for Fastify
 - [**Nexus**](https://nexusjs.org/): Declarative, Code-First GraphQL Schemas for JavaScript/TypeScript
-- [**nexus-prisma**](https://github.com/prisma/nexus-prisma/): Plugin that allows projecting types from your Prisma schema to the GraphQL schema
 - [**Prisma**](https://www.prisma.io/): Next-generation ORM for type-safe interaction with the database
 - [**PostgreSQL**](https://www.postgresql.org/): powerful, open source object-relational database system with over 30 years of active development.
 <!-- - [**Sentry**](https://sentry.io/): an error tracking and monitoring tool. -->

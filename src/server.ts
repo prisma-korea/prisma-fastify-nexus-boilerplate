@@ -1,45 +1,67 @@
-require("./opentelemetry");
+require('./opentelemetry');
 
 import fastify, {
   FastifyInstance,
   FastifyReply,
   FastifyRequest,
   FastifyServerOptions,
-} from "fastify";
+} from 'fastify';
 
-import AltairFastify from "altair-fastify-plugin";
-import { Context } from "./context";
-import mercurius from "mercurius";
-import openTelemetryPlugin from "@autotelic/fastify-opentelemetry";
-import prismaPlugin from "./plugins/prisma";
-import { schema } from "./schema";
-import shutdownPlugin from "./plugins/shutdown";
-import statusPlugin from "./plugins/status";
-import { tracingIgnoreRoutes } from "./constants";
+import AltairFastify from 'altair-fastify-plugin';
+import {Context} from './context';
+import {PubSub} from 'graphql-subscriptions';
+import {getUserId} from './utils/auth';
+import mercurius from 'mercurius';
+import openTelemetryPlugin from '@autotelic/fastify-opentelemetry';
+import prismaPlugin from './plugins/prisma';
+import {schema} from './schema';
+import shutdownPlugin from './plugins/shutdown';
+import statusPlugin from './plugins/status';
+import {tracingIgnoreRoutes} from './constants';
+
+const {JWT_SECRET} = process.env;
 
 export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
+  const pubsub = new PubSub();
   const server = fastify(opts);
 
   server.register(shutdownPlugin);
   server.register(openTelemetryPlugin, {
     wrapRoutes: true,
     ignoreRoutes: tracingIgnoreRoutes,
-    formatSpanName: (request) =>
-      `${request.url} - ${request.method}`,
+    formatSpanName: (request) => `${request.url} - ${request.method}`,
   });
   server.register(statusPlugin);
   server.register(prismaPlugin);
 
   server.register(mercurius, {
     schema,
-    path: "/graphql",
+    path: '/graphql',
     graphiql: false,
     context: (request: FastifyRequest, reply: FastifyReply): Context => {
       return {
-        prisma: server.prisma,
         request,
         reply,
+        prisma: server.prisma,
+        pubsub,
+        appSecret: JWT_SECRET,
+        userId: getUserId(reply.request.headers.authorization as string),
       };
+    },
+    subscription: {
+      onConnect: (param) => {
+        process.stdout.write('Connected to websocket\n');
+
+        return param;
+      },
+      context: async (_, req) => {
+        return {
+          prisma: server.prisma,
+          pubsub,
+          appSecret: JWT_SECRET,
+          userId: getUserId(req.headers.authorization as string),
+        };
+      },
     },
   });
 
@@ -49,24 +71,26 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
     endpointURL: '/graphql',
     initialSettings: {
       theme: 'dark',
-      "plugin.list": ['altair-graphql-plugin-graphql-explorer']
-    }
+      'plugin.list': ['altair-graphql-plugin-graphql-explorer'],
+    },
   });
 
   return server;
 }
 
-export async function startServer() {
+export async function startServer(): Promise<void> {
   const server = createServer({
     logger: {
-      level: "info",
+      level: 'info',
     },
-    disableRequestLogging: process.env.ENABLE_REQUEST_LOGGING !== "true",
+    disableRequestLogging: process.env.ENABLE_REQUEST_LOGGING !== 'true',
   });
 
   try {
     const port = process.env.PORT ?? 3000;
-    await server.listen(port, "0.0.0.0");
+    await server.listen(port, '0.0.0.0');
+
+    return;
   } catch (err) {
     server.log.error(err);
     process.exit(1);
