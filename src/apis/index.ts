@@ -1,27 +1,12 @@
 import {FastifyPluginAsync} from 'fastify';
-import POV from 'point-of-view';
-import {PrismaClient} from '@prisma/client';
-import ejs from 'ejs';
-import fp from 'fastify-plugin';
-import path from 'path';
+import thirdParty from './third-party';
 
-declare module 'fastify' {
-  interface FastifyInstance {
-    prisma: PrismaClient;
-  }
-}
+const apiRoute: FastifyPluginAsync = async (server) => {
+  server.register(thirdParty);
 
-const restApi: FastifyPluginAsync = fp(async (server) => {
-  server.register(POV, {
-    engine: {
-      ejs,
-    },
-    root: path.join(__dirname, '../../html'),
+  server.get(`/`, (): any => {
+    return {version: '1.0.0'};
   });
+};
 
-  server.get('/daum_address', async (req, reply) => {
-    reply.view('daum_address');
-  });
-});
-
-export default restApi;
+export default apiRoute;

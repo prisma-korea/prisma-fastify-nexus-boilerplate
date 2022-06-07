@@ -10,10 +10,9 @@ import {Context} from './context';
 import {getUserId} from './utils/auth';
 import mercurius from 'mercurius';
 import prismaPlugin from './plugins/prisma';
-import restApis from './apis';
+import restPlugin from './plugins/rest';
 import {schema} from './schema';
 import shutdownPlugin from './plugins/shutdown';
-import statusPlugin from './plugins/status';
 
 const {JWT_SECRET} = process.env;
 
@@ -21,9 +20,8 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
   const server = fastify(opts);
 
   server.register(shutdownPlugin);
-  server.register(statusPlugin);
+  server.register(restPlugin);
   server.register(prismaPlugin);
-  server.register(restApis);
 
   server.register(mercurius, {
     schema,
