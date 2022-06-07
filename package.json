@@ -25,6 +25,7 @@
     "altair-fastify-plugin": "4.4.2",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.8",
     "fastify": "3.29.0",
     "fastify-plugin": "3.0.1",
     "graphql": "16.5.0",
@@ -36,12 +37,14 @@
     "mercurius": "9.8.0",
     "nexus": "1.3.0",
     "nexus-validation-plugin": "^0.2.0",
+    "point-of-view": "^4.0.0",
     "ws": "^8.7.0"
   },
   "devDependencies": {
     "@dooboo/eslint-config": "^1.3.4",
     "@types/bcrypt": "^5.0.0",
     "@types/bcryptjs": "^2.4.2",
+    "@types/ejs": "^3.1.1",
     "@types/graphql-iso-date": "^3.4.0",
     "@types/jest": "28.1.1",
     "@types/jsonwebtoken": "^8.5.8",

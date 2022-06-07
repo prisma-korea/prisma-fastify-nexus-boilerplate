@@ -10,6 +10,7 @@ import {Context} from './context';
 import {getUserId} from './utils/auth';
 import mercurius from 'mercurius';
 import prismaPlugin from './plugins/prisma';
+import restApis from './apis';
 import {schema} from './schema';
 import shutdownPlugin from './plugins/shutdown';
 import statusPlugin from './plugins/status';
@@ -22,6 +23,7 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
   server.register(shutdownPlugin);
   server.register(statusPlugin);
   server.register(prismaPlugin);
+  server.register(restApis);
 
   server.register(mercurius, {
     schema,
