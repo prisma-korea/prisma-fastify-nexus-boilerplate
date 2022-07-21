@@ -31,18 +31,14 @@ jobs:
         with:
           node-version: '16.x'
 
-      - uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 6.22.2
-
       - name: Install modules
-        run: pnpm install
+        run: yarn
         working-directory: ${{ env.working-directory }}
 
-      - run: pnpm build
+      - run: yarn build
       # run the migration in the test database
-      - run: pnpm db:push
-      - run: pnpm test
+      - run: yarn db:push
+      - run: yarn test
 
   # deploy:
   #   runs-on: ubuntu-latest

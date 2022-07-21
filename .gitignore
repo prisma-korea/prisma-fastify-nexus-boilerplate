@@ -5,3 +5,12 @@ src/generated/
 !dotenv/test.env
 *.db
 .DS_Store
+
+yarn-error.log
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
