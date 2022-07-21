@@ -5,3 +5,4 @@ src/generated/
 !dotenv/test.env
 *.db
 .DS_Store
+yarn-error.log

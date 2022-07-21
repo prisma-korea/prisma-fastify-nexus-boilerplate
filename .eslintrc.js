@@ -5,4 +5,7 @@ module.exports = {
     'eslint-comments/no-unlimited-disable': 0,
     'eslint-comments/no-unused-disable': 0,
   },
+  settings: {
+    react: { version: '9999999999' },
+  },
 };
