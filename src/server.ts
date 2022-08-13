@@ -76,8 +76,11 @@ export async function startServer(): Promise<void> {
   });
 
   try {
-    const port = process.env.PORT ?? 3000;
-    await server.listen(port, '0.0.0.0');
+    const port: number = (parseInt(process.env.PORT || '0', 10), 10) ?? 3000;
+    await server.listen({
+      host: '0,0,0,0',
+      port,
+    });
 
     return;
   } catch (err) {
