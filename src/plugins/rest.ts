@@ -5,10 +5,8 @@ import fastifyView from '@fastify/view';
 import path from 'path';
 
 const restPlugin: FastifyPluginAsync = async (server) => {
-  server.register(pointOfView, {
-    engine: {
-      ejs,
-    },
+  server.register(fastifyView, {
+    engine: {ejs},
     root: path.join(__dirname, '../../html'),
   });
 
