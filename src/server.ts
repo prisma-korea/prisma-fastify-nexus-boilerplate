@@ -1,12 +1,13 @@
-import fastify, {
+import type {
   FastifyInstance,
   FastifyReply,
   FastifyRequest,
   FastifyServerOptions,
 } from 'fastify';
+import fastify from 'fastify';
 
 import AltairFastify from 'altair-fastify-plugin';
-import {Context} from './context';
+import type {Context} from './context';
 import {getUserId} from './utils/auth';
 import mercurius from 'mercurius';
 import prismaPlugin from './plugins/prisma';

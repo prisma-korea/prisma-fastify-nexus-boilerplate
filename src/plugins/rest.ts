@@ -1,4 +1,4 @@
-import {FastifyPluginAsync} from 'fastify';
+import type {FastifyPluginAsync} from 'fastify';
 import apis from '../apis';
 import ejs from 'ejs';
 import fastifyView from '@fastify/view';

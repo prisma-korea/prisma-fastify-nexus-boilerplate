@@ -1,7 +1,7 @@
-import {FastifyReply, FastifyRequest} from 'fastify';
+import type {FastifyReply, FastifyRequest} from 'fastify';
 
-import {PrismaClient} from '@prisma/client';
-import {PubSub} from 'mercurius';
+import type {PrismaClient} from '@prisma/client';
+import type {PubSub} from 'mercurius';
 
 export interface Context {
   prisma: PrismaClient;

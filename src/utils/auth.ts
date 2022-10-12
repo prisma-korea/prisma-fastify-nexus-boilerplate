@@ -1,4 +1,4 @@
-import {FastifyReply} from 'fastify';
+import type {FastifyReply} from 'fastify';
 import bcrypt from 'bcrypt';
 import path from 'path';
 import {verify} from 'jsonwebtoken';

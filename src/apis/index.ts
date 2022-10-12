@@ -1,4 +1,4 @@
-import {FastifyPluginAsync} from 'fastify';
+import type {FastifyPluginAsync} from 'fastify';
 import thirdParty from './third-party';
 
 const apiRoute: FastifyPluginAsync = async (server) => {
